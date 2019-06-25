@@ -1,0 +1,170 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <title>Demo Page</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+
+    <script type="text/javascript">
+      var pollingBooth = (function() {
+
+        // Change these to your google sheet and app values:
+        var SHEET_ID='1GfTrRR4wrpGa2VImRGPDnpBXTcPNuV4-kjzHo8oBiPA';
+        var APP_URL = "https://script.google.com/macros/s/AKfycbymv2i4JOpuEHhZ35ZWjGNfY7fjgJwnU3IJ4CkDRvgDKreHVq8/exec";
+
+        // Programmatically inserts HTML to create poll body
+        var pollContent = [
+          {
+            question: 'Dogs or cats?',
+            choices: [
+              'dog',
+              'cat'
+            ]
+          },
+          {
+            question: 'Cake, pie, or ice cream?',
+            choices: [
+              'cake',
+              'pie',
+              'ice cream'
+            ]
+          },
+          { question: 'Do you like the Oxford comma?',
+            choices: [
+              "Yes, I'm pretentious",
+              "Is that a soccer team?"
+            ]
+          }
+        ];
+
+        var choiceArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
+        function populatePoll() {
+          var pollHtml = '';
+          var resultsHtml = '';
+
+          pollContent.forEach(function(content, questionIndex) {
+            var questionHtml =
+              '<div class="poll">' +
+              `    <div class="question__body">${content.question}</div>`;
+
+            var choiceHtml = '';
+            content.choices.forEach(function(choice, choiceIndex) {
+              choiceHtml +=
+                `    <div class="choice" onclick="pollingBooth.voteFor(${questionIndex + 1}, '${choiceArray[choiceIndex]}')">` +
+                choice +
+                '    </div>';
+            });
+            choiceHtml += '</div>';
+
+            questionHtml= questionHtml + choiceHtml + '</div>';
+            pollHtml += questionHtml;
+
+            resultsHtml += `<canvas id="results_${questionIndex+1}"></canvas>`
+          });
+
+          $('#pollContent').html(pollHtml);
+          $('#pollResults').html(resultsHtml);
+        }
+
+        function voteFor(questionNum, choice) {
+
+          $.ajax({
+            url: APP_URL,
+            method: "POST",
+            dataType: "json",
+            data: {
+              row: questionNum,
+              column: choice
+            }
+          });
+        }
+
+        function getResults() {
+          var jsonURL = `https://spreadsheets.google.com/feeds/cells/${SHEET_ID}/1/public/full?alt=json`;
+          var data = [];
+          $.getJSON(jsonURL, function(body) {
+            var entry = body.feed.entry;
+            entry.forEach(function(item) {
+              var column = item.title.$t[0];
+              var row = parseInt(item.title.$t[1] - 1, 10);
+              var tally = item.content.$t;
+              if (data[row] === undefined) {
+                data[row] = {};
+              }
+              data[row][column] = tally;
+            });
+
+            data.forEach(function(choices, i) {
+              var labels = [];
+              var values = [];
+              $.each(choices, function(key, value) {
+                labels.push(pollContent[i].choices[choiceArray.indexOf(key)]);
+                values.push(value);
+              });
+
+              new Chart(document.getElementById(`results_${i+1}`), {
+
+                type: 'bar',
+                data: {
+                  labels: labels,
+                  datasets: [
+                    {
+                      label: "Votes",
+                      backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                      data: values
+                    }
+                  ]
+                },
+                options: {
+                  title: {
+                    display: true,
+                    text: pollContent[i].question
+                  },
+                  scales: {
+                    yAxes: [{
+                      ticks: {
+                        beginAtZero: true
+                      }
+                    }]
+                  }
+                }
+              });
+            });
+          });
+        }
+
+        $(document).ready(function() {
+          populatePoll();
+          getResults();
+        });
+
+        return {
+          voteFor: voteFor
+        }
+      }());
+    </script>
+</head>
+
+<body>
+<!--[if IE]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+<![endif]-->
+
+
+<div class="title">Poll</div>
+<div id="pollContent"></div>
+<div class="title">Results</div>
+<div class="results__graph">
+    <div id="pollResults"></div>
+</div>
+
+</body>
+
+</html>

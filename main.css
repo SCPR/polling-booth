@@ -1,0 +1,32 @@
+.title {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+#pollContent {
+    margin: 1rem 1rem 5rem 1rem;
+}
+
+.poll {
+    margin: 2rem 0;
+    border-radius: 1rem;
+    box-shadow: 2px 5px 8px 0px #82807a;
+    padding: 1rem 2rem;
+    width: 50%;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #82807a;
+}
+
+.choice {
+    padding: 1rem;
+}
+
+.choice:hover {
+    background-color: #d8d6d0;
+    cursor: pointer;
+}
+
+.results__graph {
+    width: 50%;
+}
