@@ -55,3 +55,7 @@ Simple polls backed by google sheets.
 1. The rest of the javascript in [demo.html](demo.html) deals with building the poll HTML programatically as well as fetching the results and feeding it into chart.js
 
 
+## credits
+Credit goes to these two tutorials which sparked this idea:
+https://medium.com/@dmccoy/how-to-submit-an-html-form-to-google-sheets-without-google-forms-b833952cc175
+https://medium.com/dali-lab/google-sheets-and-json-easy-backend-e29e9ef3df2
