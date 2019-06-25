@@ -1,6 +1,8 @@
 # polling-booth
 Simple polls backed by google sheets.
 
+[demo here](https://scpr.github.io/polling-booth/demo.html)
+
 **This is completely not a secure way to do polling, but it's quick, easy, and doesn't require a database table.**
 
 ## requirements
