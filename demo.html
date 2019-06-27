@@ -57,8 +57,9 @@
             var choiceHtml = '';
             content.choices.forEach(function(choice, choiceIndex) {
               choiceHtml +=
-                `    <div class="choice" onclick="pollingBooth.voteFor(${questionIndex + 1}, '${choiceArray[choiceIndex]}')">` +
+                `    <div class="choice" id="choice_${questionIndex}_${choiceArray[choiceIndex]}" onclick="pollingBooth.voteFor(${questionIndex + 1}, '${choiceArray[choiceIndex]}')">` +
                 choice +
+                `<div class="voted hidden" id="check_${questionIndex}_${choiceArray[choiceIndex]}">&#10004;</div>` +
                 '    </div>';
             });
             choiceHtml += '</div>';
@@ -74,7 +75,7 @@
         }
 
         function voteFor(questionNum, choice) {
-
+          $(`#check_${questionNum-1}_${choice}`).removeClass('hidden').addClass('shown');
           $.ajax({
             url: APP_URL,
             method: "POST",

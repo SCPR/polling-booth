@@ -12,7 +12,6 @@
     border-radius: 1rem;
     box-shadow: 2px 5px 8px 0px #82807a;
     padding: 1rem 2rem;
-    width: 50%;
     font-size: 1.5rem;
     font-weight: 400;
     color: #82807a;
@@ -28,5 +27,17 @@
 }
 
 .results__graph {
-    width: 50%;
+}
+
+.voted {
+    margin-left: 1rem;
+    color: #3ece57;
+}
+
+.hidden {
+    display: none;
+}
+
+.shown {
+    display: inline-block;
 }
