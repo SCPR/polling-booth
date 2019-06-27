@@ -23,7 +23,7 @@ Simple polls backed by google sheets.
 1. **Important:** Change "Who has access to the app:" to "Anyone, even anonymous".
 1. Click `Deploy`
 1. You'll be presented with a URL for the web app. Copy that.
-1. Past the above URL into the `APP_URL` variable of [demo.html](demo.html)
+1. Paste the above URL into the `APP_URL` variable of [demo.html](demo.html)
 1. Close the script editor now and go back to your google sheet.
 1. Get the google sheet key (from the URL) and paste it into the `SHEET_ID` variable.
 1. You can create polls by changing the values in the `pollContent` variable of [demo.html](demo.html):
